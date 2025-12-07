@@ -1,0 +1,3 @@
+[submodule "easyrpg_buildscripts"]
+	path = easyrpg_buildscripts
+	url = https://github.com/EasyRPG/buildscripts.git

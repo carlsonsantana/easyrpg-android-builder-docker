@@ -13,7 +13,7 @@ GAME_VERSION_NAME=1.0.0
 GAME_METADATA=$(pwd)/metadata
 GAME_ICON_PATH=$GAME_METADATA/en-US/images/icon.png
 GAME_ICON_PROMOGRAPHIC=$GAME_METADATA/en-US/images/promoGraphic.png
-EASYRPG_PLAYER_FOLDER=$(pwd)/buildscripts/android/Player
+EASYRPG_PLAYER_FOLDER=$(pwd)/easyrpg_buildscripts/android/Player
 ##############################
 
 ANDROID_FOLDER=$EASYRPG_PLAYER_FOLDER/builds/android
