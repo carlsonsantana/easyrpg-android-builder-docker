@@ -33,6 +33,33 @@ RUN keytool -genkey -noprompt -v \
   java -jar /apktool/apktool.jar d /easyrpg_buildscripts/android/Player/builds/android/app/build/outputs/apk/release/app-release.apk -o /easyrpg-android && \
   rm -r ~/.gradle ~/.android ~/.local && \
   rm -r android-sdk/ arm64-v8a-toolchain/ armeabi-v7a-toolchain/ x86-toolchain/ x86_64-toolchain/ && \
-  rm -r /easyrpg_buildscripts/android/Player/builds/android/app/build && \
+  rm -r /easyrpg_buildscripts/android/Player/builds/android/app/build /easyrpg_buildscripts/android/Player/builds/android/app/.cxx && \
   rm /easyrpg_buildscripts/android/game_certificate.jks && \
   unset BUILD_LIBLCF
+
+
+# Another image with only used resources
+FROM eclipse-temurin:17.0.17_10-jre-alpine-3.22
+
+# Environment variables
+ENV GAME_APK_NAME "com.mycompany.gamename"
+ENV GAME_NAME "Game Name"
+
+# Install dependencies
+RUN apk --update --no-cache add imagemagick zip
+
+# Copy files from previous build
+RUN mkdir /apktool
+COPY --from=android-sdk-builder /apktool/apktool.jar /apktool/apktool.jar
+COPY --from=android-sdk-builder /easyrpg-android /easyrpg-android
+
+# Volumes
+RUN mkdir /output
+VOLUME /rpgmaker2kx_game
+VOLUME /icon.png
+VOLUME /output
+
+# Run build
+WORKDIR /
+COPY run.sh /
+CMD ["sh", "/run.sh"]

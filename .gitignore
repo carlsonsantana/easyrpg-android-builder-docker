@@ -1,1 +1,5 @@
-/buildscripts/
+/rpgmaker2kx_game/**/*
+!/rpgmaker2kx_game/.gitkeep
+
+/output/**/*
+!/output/.gitkeep
