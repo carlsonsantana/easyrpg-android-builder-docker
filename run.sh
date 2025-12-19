@@ -17,13 +17,17 @@ if [ -f "/game_certificate.key" ]; then
   fi
 fi
 
+resize_icon() {
+  magick /icon.png -resize $1 $2 && oxipng -o 6 --strip safe $2
+}
+
 # Convert icons
-magick /icon.png -resize 36x36 /easyrpg-android/res/drawable-ldpi/ic_launcher.png
-magick /icon.png -resize 48x48 /easyrpg-android/res/drawable-mdpi/ic_launcher.png
-magick /icon.png -resize 72x72 /easyrpg-android/res/drawable-hdpi/ic_launcher.png
-magick /icon.png -resize 96x96 /easyrpg-android/res/drawable-xhdpi/ic_launcher.png
-magick /icon.png -resize 144x144 /easyrpg-android/res/drawable-xxhdpi/ic_launcher.png
-magick /icon.png -resize 192x192 /easyrpg-android/res/drawable-xxxhdpi/ic_launcher.png
+resize_icon "36x36" "/easyrpg-android/res/drawable-ldpi/ic_launcher.png"
+resize_icon "48x48" "/easyrpg-android/res/drawable-mdpi/ic_launcher.png"
+resize_icon "72x72" "/easyrpg-android/res/drawable-hdpi/ic_launcher.png"
+resize_icon "96x96" "/easyrpg-android/res/drawable-xhdpi/ic_launcher.png"
+resize_icon "144x144" "/easyrpg-android/res/drawable-xxhdpi/ic_launcher.png"
+resize_icon "192x192" "/easyrpg-android/res/drawable-xxxhdpi/ic_launcher.png"
 
 # Rename APK name and application ID
 sed -i "s|EasyRPG Player|$GAME_NAME|g" /easyrpg-android/res/values/strings.xml

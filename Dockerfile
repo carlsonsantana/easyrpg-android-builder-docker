@@ -42,7 +42,7 @@ RUN keytool -genkey -noprompt -v \
 FROM eclipse-temurin:17.0.17_10-jre-alpine-3.22
 
 # Install dependencies
-RUN apk --update --no-cache add curl imagemagick zip abseil-cpp-hash gtest libprotobuf && \
+RUN apk --update --no-cache add curl imagemagick oxipng zip abseil-cpp-hash gtest libprotobuf && \
   apk --update --no-cache fetch android-build-tools --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing/ && \
   tar -zxvf android-build-tools-*.apk && \
   rm android-build-tools-*.apk .SIGN.RSA.alpine-devel@* .PKGINFO
