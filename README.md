@@ -34,4 +34,5 @@ You must mount the following volumes when running the Docker image. These mounts
 * `GAME_KEYSTORE_PASSWORD` the keystore password, required when `/game_certificate.key` volume is filled;
 * `GAME_KEYSTORE_KEY_ALIAS` the key alias in keystore, required when `/game_certificate.key` volume is filled;
 * `GAME_KEYSTORE_KEY_PASSWORD` the key password in keystore, required when `/game_certificate.key` volume is filled;
-* `GAME_METADATA_SITE` the website showed on the side menu.
+* `GAME_METADATA_SITE` the website showed on the side menu;
+* `GAME_OPTIMIZATION_MINIFY_IMAGES` set to `true` to minify images without losing quality.
