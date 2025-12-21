@@ -51,7 +51,7 @@ printf "version: 2.12.1\napkFileName: app-release.apk\nusesFramework:\n  ids:\n 
 
 # Create game.zip asset
 cd /rpgmaker2kx_game
-zip -Z deflate -vr /easyrpg-android/assets/game.zip *
+zip -Z deflate -x *.exe -x .gitkeep -x **/Thumbs.db -vr /easyrpg-android/assets/game.zip *
 
 # Build an aligned version of the Android app
 java -jar /apktool/apktool.jar b /easyrpg-android -o /tmp/rpgmaker2kx-unsigned.apk
