@@ -74,5 +74,5 @@ ENV GAME_OPTIMIZATION_MINIFY_IMAGES "false"
 
 # Run build
 WORKDIR /
-COPY run.sh /
-CMD ["sh", "/run.sh"]
+COPY script /script
+CMD ["sh", "/script/run.sh"]
