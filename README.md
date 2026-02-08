@@ -24,6 +24,9 @@ You must mount the following volumes when running the Docker image. These mounts
 * `/icon.png` the icon for your Android game;
 * `/output` the directory where the aligned or signed `.apk` and `.aab` will be created;
 * **(Optional)** `/game_certificate.key` the keystore file used to [sign the `.apk` file](https://developer.android.com/build/building-cmdline#sign_manually) and [sign the `.aab` file](https://learn.microsoft.com/en-us/power-apps/maker/common/wrap/code-sign-aab-file), if passed you must pass the following environment variables `GAME_KEYSTORE_PASSWORD`, `GAME_KEYSTORE_KEY_ALIAS` and `GAME_KEYSTORE_KEY_PASSWORD`;
+* **(Optional)** `/run/secrets/game_keystore_password` the keystore password in plain text file, required when `/game_certificate.key` volume is filled and `GAME_KEYSTORE_PASSWORD` environment variable isn't filled;
+* **(Optional)** `/run/secrets/game_keystore_key_alias` the key alias in keystore in plain text file, required when `/game_certificate.key` volume is filled and `GAME_KEYSTORE_KEY_ALIAS` environment variable isn't filled;
+* **(Optional)** `/run/secrets/game_keystore_key_password` the key password in keystore in plain text file, required when `/game_certificate.key` volume is filled and `GAME_KEYSTORE_KEY_PASSWORD` environment variable isn't filled.
 
 ### Environment Variables
 
@@ -31,8 +34,8 @@ You must mount the following volumes when running the Docker image. These mounts
 * `GAME_NAME` the name displayed beneath the app icon on the device;
 * `GAME_VERSION_CODE` the version number code of your game (example: "100"), new versions must have a greater value than old ones;
 * `GAME_VERSION_NAME` the version showed to the user that allows use letters and dots (example: "1.0.0");
-* `GAME_KEYSTORE_PASSWORD` the keystore password, required when `/game_certificate.key` volume is filled;
-* `GAME_KEYSTORE_KEY_ALIAS` the key alias in keystore, required when `/game_certificate.key` volume is filled;
-* `GAME_KEYSTORE_KEY_PASSWORD` the key password in keystore, required when `/game_certificate.key` volume is filled;
+* `GAME_KEYSTORE_PASSWORD` the keystore password, required when `/game_certificate.key` volume is filled and `/run/secrets/game_keystore_password` volume isn't filled;
+* `GAME_KEYSTORE_KEY_ALIAS` the key alias in keystore, required when `/game_certificate.key` volume is filled and `/run/secrets/game_keystore_key_alias` volume isn't filled;
+* `GAME_KEYSTORE_KEY_PASSWORD` the key password in keystore, required when `/game_certificate.key` volume is filled and `/run/secrets/game_keystore_key_password` volume isn't filled;
 * `GAME_METADATA_SITE` the website showed on the side menu;
 * `GAME_OPTIMIZATION_MINIFY_IMAGES` set to `true` to minify images without losing quality.
