@@ -1,12 +1,17 @@
-FROM archlinux:base-devel AS android-sdk-builder
+FROM --platform=$BUILDPLATFORM alpine:3.18.12 AS android-sdk-builder
 
 # Build arguments
 ARG APKTOOL_VERSION="2.12.1"
 
 # Install dependencies
-RUN pacman -Syu --noconfirm --disable-download-timeout && \
-  pacman -S unzip jdk17-openjdk make git wget imagemagick autoconf automake libtool cmake perl patch pkgconf gcc meson oxipng --noconfirm --disable-download-timeout && \
-  rm -R /var/cache/pacman/pkg/*
+RUN apk --update --no-cache add curl openjdk17-jdk bash unzip make git wget imagemagick autoconf automake libtool cmake perl patch pkgconf build-base gcc g++ oxipng && \
+  apk --no-cache add python3 samurai libc6-compat gcompat && \
+  apk --update --no-cache fetch meson --repository=https://dl-cdn.alpinelinux.org/alpine/v3.23/main && \
+  tar -zxvf meson-* && \
+  mv /usr/lib/python3.12/site-packages/mesonbuild/ /usr/lib/python3.11/site-packages/mesonbuild && \
+  mv /usr/lib/python3.12/site-packages/meson-*/ /usr/lib/python3.11/site-packages/ && \
+  rm meson-* && \
+  rm -r /usr/lib/python3.12/
 RUN mkdir /apktool && \
   curl -L "https://bitbucket.org/iBotPeaches/apktool/downloads/apktool_""$APKTOOL_VERSION"".jar" --output /apktool/apktool.jar
 
@@ -29,7 +34,7 @@ RUN keytool -genkey -noprompt -v \
   sed -i "s|^KEY_PASSWORD=$|KEY_PASSWORD=123456|g" /easyrpg_buildscripts/android/4_build_android_port.sh && \
   sed -i "s|applicationId \"org\.easyrpg\.player\"|applicationId \"aaaaa.bbbbb.ccccc\"|g" /easyrpg_buildscripts/android/Player/builds/android/app/build.gradle && \
   export BUILD_LIBLCF=1 && \
-  ./0_build_everything.sh && \
+  bash ./0_build_everything.sh && \
   java -jar /apktool/apktool.jar d /easyrpg_buildscripts/android/Player/builds/android/app/build/outputs/apk/release/app-release.apk -o /easyrpg-android && \
   oxipng -r -o 2 --strip safe /easyrpg-android/res && \
   rm -r ~/.gradle ~/.android ~/.local && \
@@ -40,11 +45,11 @@ RUN keytool -genkey -noprompt -v \
 
 
 # Another image with only used resources
-FROM eclipse-temurin:17.0.17_10-jdk-alpine-3.23
+FROM alpine:3.23.3
 
 # Install dependencies
-RUN apk --update --no-cache add curl imagemagick oxipng zip abseil-cpp-hash gtest libprotobuf fmt && \
-  apk --update --no-cache add android-build-tools --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing/
+RUN apk --update --no-cache add openjdk17-jdk curl imagemagick oxipng zip abseil-cpp-hash gtest libprotobuf fmt && \
+  apk --update --no-cache add android-build-tools --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing/
 RUN curl -L "https://github.com/carlsonsantana/signmyapp/releases/download/1.1.0/signmyapp.jar" --output /opt/signmyapp.jar && \
   curl -L "https://github.com/google/bundletool/releases/download/1.18.3/bundletool-all-1.18.3.jar" --output /opt/bundletool.jar && \
   curl -L "https://github.com/Sable/android-platforms/raw/f2ca864c44f277bbc09afda0ba36437ce22105f0/android-36/android.jar" --output /opt/android.jar
