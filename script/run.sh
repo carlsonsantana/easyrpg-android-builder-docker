@@ -9,6 +9,7 @@ ICON_BASENAME="ic_launcher"
 
 source "/script/common.sh"
 
+init_keystore_variables
 remove_previous_build_files
 validate_environment_variables_filled
 replace_icons
